@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class ProductDto {
     private Long id;
