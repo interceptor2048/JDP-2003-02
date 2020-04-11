@@ -9,6 +9,7 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity(name = "USERS")
@@ -28,8 +29,10 @@ public class User {
     private Long userKey;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Cart> carts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
 }
