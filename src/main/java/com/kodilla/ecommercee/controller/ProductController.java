@@ -20,71 +20,59 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ProductDto get(@PathVariable Long id) throws ProductNotFoundException {
-        return new ProductDto(
-                1L,
-                "Kurtka zimowa",
-                "Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor. " +
-                        "Donec euismod pretium eros et eleifend. Aliquam vulputate faucibus lorem non auctor. " +
-                        "Vivamus erat turpis, molestie a nisl non, scelerisque luctus enim. " +
-                        "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor. Vivamus a bibendum purus.",
-                new BigDecimal(100),
-                1L);
+        return ProductDto.builder()
+                .id(1L)
+                .name("Kurtka zimowa")
+                .description("Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor")
+                .price(new BigDecimal(100))
+                .groupId("1")
+                .build();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody ProductDto productDto) {
-
     }
 
     @PutMapping
     public ProductDto update(@RequestBody ProductDto productDto) {
-        return new ProductDto(
-                1L,
-                "Kurtka zimowa",
-                "Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor. " +
-                        "Donec euismod pretium eros et eleifend. Aliquam vulputate faucibus lorem non auctor. " +
-                        "Vivamus erat turpis, molestie a nisl non, scelerisque luctus enim. " +
-                        "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor. Vivamus a bibendum purus.",
-                new BigDecimal(100),
-                1L);
+        return ProductDto.builder()
+                .id(1L)
+                .name("Kurtka zimowa")
+                .description("Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor")
+                .price(new BigDecimal(100))
+                .groupId("1")
+                .build();
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-
     }
 
     private List<ProductDto> getMockProductList() {
         ArrayList<ProductDto> productsList = new ArrayList<>();
+        ProductDto productDto1 = ProductDto.builder()
+                .id(1L)
+                .name("Kurtka zimowa")
+                .description("Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor")
+                .price(new BigDecimal(100))
+                .groupId("1")
+                .build();
 
-        ProductDto productDto1 = new ProductDto(
-                1L,
-                "Kurtka zimowa",
-                "Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor. " +
-                        "Donec euismod pretium eros et eleifend. Aliquam vulputate faucibus lorem non auctor. " +
-                        "Vivamus erat turpis, molestie a nisl non, scelerisque luctus enim. " +
-                        "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor. Vivamus a bibendum purus.",
-                new BigDecimal(100),
-                1L);
-        ProductDto productDto2 = new ProductDto(
-                2L,
-                "płaszcz",
-                "Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor. " +
-                        "Donec euismod pretium eros et eleifend. Aliquam vulputate faucibus lorem non auctor. " +
-                        "Vivamus erat turpis, molestie a nisl non, scelerisque luctus enim. " +
-                        "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor. Vivamus a bibendum purus.",
-                new BigDecimal(150),
-                1L);
+        ProductDto productDto2 = ProductDto.builder()
+                .id(2L)
+                .name("płaszcz")
+                .description("Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor")
+                .price(new BigDecimal(150))
+                .groupId("1")
+                .build();
 
-        ProductDto productDto3 = new ProductDto(
-                3L,
-                "buty",
-                "Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor. " +
-                        "Donec euismod pretium eros et eleifend. Aliquam vulputate faucibus lorem non auctor. " +
-                        "Vivamus erat turpis, molestie a nisl non, scelerisque luctus enim. " +
-                        "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor. Vivamus a bibendum purus.",
-                new BigDecimal(100),
-                4L);
+        ProductDto productDto3 = ProductDto.builder()
+                .id(3L)
+                .name("buty")
+                .description("Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor")
+                .price(new BigDecimal(120))
+                .groupId("4")
+                .build();
 
         productsList.add(productDto1);
         productsList.add(productDto2);
