@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.repository;
 
-
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
@@ -65,11 +64,13 @@ public class CartRepositoryTestSuite {
         Long pro31Id = product31.getId();
         cartRepository.save(cartWithProducts);
 
+
         cartWithProducts.getCartItems().remove(product11);
         cartWithProducts.getCartItems().remove(product21);
         cartWithProducts.getCartItems().remove(product31);
         cartRepository.save(cartWithProducts);
         Long cartWithProdId = cartWithProducts.getId();
+
         int actualCartSize = cartWithProducts.getCartItems().size();
 
         //Then
@@ -108,7 +109,6 @@ public class CartRepositoryTestSuite {
         cartItems.add(product20);
         cartItems.add(product30);
         Cart cartWithProd = new Cart(null, new BigDecimal(0),true, kowalski, cartItems);
-
 
         //when
         userRepository.save(kowalski);

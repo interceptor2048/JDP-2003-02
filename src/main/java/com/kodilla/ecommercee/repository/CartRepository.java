@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 @Transactional
 @Repository
 public interface CartRepository extends CrudRepository<Cart, Long> {

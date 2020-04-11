@@ -32,7 +32,6 @@ public class Cart {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "CART_PRODUCT",
