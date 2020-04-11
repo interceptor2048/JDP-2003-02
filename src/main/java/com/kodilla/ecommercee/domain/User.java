@@ -29,10 +29,8 @@ public class User {
     private Long userKey;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Cart> carts = new ArrayList<>();
+    private List<Cart> carts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Order> orders = new ArrayList<>();
+    private List<Order> orders;
 }
