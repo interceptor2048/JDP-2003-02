@@ -3,25 +3,35 @@ package com.kodilla.ecommercee.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "users")
+@Entity
+@Table(name = "USERS")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long Id;
+    @NotNull
+    @Column(name = "USER_ID", unique = true)
+    private Long id;
 
-    @Column(name = "username")
+    @NotNull
+    @Column(name = "USERNAME")
     private String username;
 
-    @Column(name = "status")
+    @NotNull
+    @Column(name = "STATUS")
     private int status;
 
-    @Column(name = "userKey")
+    @NotNull
+    @Column(name = "USER_KEY")
     private Long userKey;
+
+
 }

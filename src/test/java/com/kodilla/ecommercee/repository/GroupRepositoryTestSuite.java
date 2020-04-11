@@ -25,6 +25,8 @@ public class GroupRepositoryTestSuite {
     private GroupDbService groupDbService;
     @Autowired
     private ProductDbService productDbService;
+    @Autowired
+    private ProductRepository productRepository;
 
     private Group getTestGroup() {
         String name = "dresses";
@@ -40,6 +42,14 @@ public class GroupRepositoryTestSuite {
         return dresses;
     }
 
+    private void cleanUp(Group group) {
+        group.getProducts().stream().forEach(p -> productDbService.deleteById(p.getId()));
+        groupDbService.deleteById(group.getId());
+
+        Assert.assertEquals(0, groupRepository.count());
+        Assert.assertEquals(0, productRepository.count());
+    }
+
     @Test
     public void testSaveGroupWithProducts() {
         //Given
@@ -49,14 +59,14 @@ public class GroupRepositoryTestSuite {
         groupRepository.save(group);
 
         //Then
-        Long id = group.getId();
-        Optional<Group> actualGroup = groupRepository.findById(id);
+        Long groupId = group.getId();
+        Optional<Group> actualGroup = groupRepository.findById(groupId);
         Assert.assertTrue(actualGroup.isPresent());
         Assert.assertEquals("dresses", actualGroup.get().getName());
         Assert.assertEquals(3, actualGroup.get().getProducts().size());
 
         //CleanUp
-        groupDbService.deleteById(id);
+        cleanUp(actualGroup.get());
     }
 
     @Test
@@ -76,7 +86,7 @@ public class GroupRepositoryTestSuite {
         Assert.assertEquals(2, actualGroup.get().getProducts().size());
 
         //CleanUp
-        groupDbService.deleteById(groupId);
+        cleanUp(actualGroup.get());
     }
 
     @Test
@@ -95,5 +105,8 @@ public class GroupRepositoryTestSuite {
         Optional<Group> actualGroup = groupRepository.findById(groupId);
         Assert.assertTrue(actualGroup.isPresent());
         Assert.assertEquals(newGroupName, actualGroup.get().getName());
+
+        //CleanUp
+        cleanUp(actualGroup.get());
     }
 }
