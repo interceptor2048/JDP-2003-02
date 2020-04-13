@@ -1,3 +1,4 @@
+/*
 package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.domain.Group;
@@ -6,6 +7,7 @@ import com.kodilla.ecommercee.exceptions.GroupNotFoundException;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
 import com.kodilla.ecommercee.service.GroupDbService;
 import com.kodilla.ecommercee.service.ProductDbService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +35,21 @@ public class ProductRepositoryTestSuite {
     @Autowired
     private GroupDbService groupDbService;
 
-    private Group clothes;
-    private Product trousers;
-    private Product boots;
-    private Product shirt;
+    private Group group;
+    private List<Product> productList;
+    private List<Order>
+
+
+    @Before
+    public void setUp() {
+
+    }
 
 
     private void createData() {
         List<Product> productList = new ArrayList<>();
         clothes = new Group(null, "clothes", productList);
+        Product cos = new Product()
         trousers = new Product(null, "Trousers", "Denim", new BigDecimal("31"), clothes);
         boots = new Product(null, "Boots", "Leather", new BigDecimal("43.2"), clothes);
         shirt = new Product(null, "shirt", "White", new BigDecimal("43.2"), clothes);
@@ -182,3 +190,4 @@ public class ProductRepositoryTestSuite {
         groupDbService.deleteById(clothesId);
     }
 }
+*/

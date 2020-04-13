@@ -1,3 +1,4 @@
+/*
 package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.domain.Group;
@@ -110,3 +111,4 @@ public class GroupRepositoryTestSuite {
         cleanUp(actualGroup.get());
     }
 }
+*/

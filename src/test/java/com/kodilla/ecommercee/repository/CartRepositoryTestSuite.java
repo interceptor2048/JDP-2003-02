@@ -1,3 +1,4 @@
+/*
 package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.domain.Cart;
@@ -7,6 +8,7 @@ import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.service.GroupDbService;
 import com.kodilla.ecommercee.service.ProductDbService;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class CartRepositoryTestSuite {
     @Autowired
     private ProductDbService productDbService;
 
+    @Before
+    public void setUp()
+
 
     @Test
     public void testRemoveProductsFromCart() {
@@ -45,6 +50,7 @@ public class CartRepositoryTestSuite {
         Product product11 = new Product(null, "P1", "Pellentesque tempus interdum quam ut rhoncus.", BigDecimal.valueOf(230), groupDresses);
         Product product21 = new Product(null, "P2", "Tempus interdum quam ut rhoncus.", BigDecimal.valueOf(255), groupDresses);
         Product product31 = new Product(null, "P3", "Interdum quam ut rhoncus.", BigDecimal.valueOf(543), groupDresses);
+        Product product = new Product()
         List<Product> cartItems = new ArrayList<>();
         cartItems.add(product11);
         cartItems.add(product21);
@@ -192,3 +198,4 @@ public class CartRepositoryTestSuite {
         }
     }
 }
+*/
