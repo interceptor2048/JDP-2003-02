@@ -23,7 +23,7 @@ public class User {
     private String username;
 
     @Column(name = "STATUS")
-    private int status;
+    private String status;
 
     @Column(name = "USER_KEY")
     private Long userKey;

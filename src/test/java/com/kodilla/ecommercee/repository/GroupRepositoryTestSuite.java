@@ -50,9 +50,6 @@ public class GroupRepositoryTestSuite {
     private void cleanUp(Group group) {
         group.getProducts().stream().forEach(p -> productDbService.deleteById(p.getId()));
         groupDbService.deleteById(group.getId());
-
-/*      Assert.assertEquals(0, groupRepository.count());
-        Assert.assertEquals(0, productRepository.count());*/
     }
 
     @Test
