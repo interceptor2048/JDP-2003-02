@@ -7,9 +7,6 @@ import com.kodilla.ecommercee.service.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class CartMapper {
     ProductMapper productMapper;
@@ -24,10 +21,18 @@ public class CartMapper {
     }
 
     public Cart mapToCart(final CartDto cartDto) {
-        return new Cart(cartDto.getId(), cartDto.getTotalPrice(), cartDto.isClosed(), userDbService.getUserById(cartDto.getUserId()).get(), productDbService.getProductsFromIdList(cartDto.getCartItems()));
+        return new Cart(cartDto.getId(),
+                cartDto.getTotalPrice(),
+                cartDto.isClosed(),
+                userDbService.getUser(cartDto.getUserId()),
+                productMapper.mapToProductList(cartDto.getCartItems()));
     }
 
     public CartDto mapToCartDto(final Cart cart) {
-        return new CartDto(cart.getId(), cart.getTotalPrice(), cart.isClosed(), cart.getUser().getId(), productDbService.getProductsIdList(cart.getCartItems()));
+        return new CartDto(cart.getId(),
+                cart.getTotalPrice(),
+                cart.isClosed(),
+                cart.getUser().getId(),
+                productMapper.mapToProductDtoList(cart.getCartItems()));
     }
 }

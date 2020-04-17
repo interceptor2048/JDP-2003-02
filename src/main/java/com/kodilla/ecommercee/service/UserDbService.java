@@ -19,4 +19,12 @@ public class UserDbService {
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
+
+    public User getUser(Long userId) {
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isPresent()) {
+            return foundUser.get();
+        }
+        return null;
+    }
 }
