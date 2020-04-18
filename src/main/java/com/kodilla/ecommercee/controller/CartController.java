@@ -6,10 +6,11 @@ import com.kodilla.ecommercee.service.CartDbService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/v1/carts")
@@ -25,18 +26,18 @@ public class CartController {
         this.cartDbService = cartDbService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public void create(@RequestBody Long userId) {
         cartDbService.saveCart(cartMapper.mapToCart(cartDbService.createEmptyCart(userId)));
     }
 
-    @GetMapping
-    public List<ProductDto> get(@RequestBody Long cartId) {
+    @GetMapping("/{cartId}")
+    public List<ProductDto> get(@PathVariable Long cartId) {
         return cartDbService.getProductsFormBasket(cartId);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addProduct(@RequestBody Long cartId, @RequestBody ProductDto productDto) {
+    @PutMapping("/{cartId}")
+    public void addProduct(@PathVariable Long cartId, @RequestBody ProductDto productDto) {
         cartDbService.addItemToCart(cartId, productDto);
     }
 
@@ -48,8 +49,8 @@ public class CartController {
         }
     }
 
-    @PostMapping(value = "/createOrder")
-    public void createOrder(@RequestBody Long cartId) {
+    @PostMapping("{cartId}/createOrder")
+    public void createOrder(@PathVariable Long cartId) {
         cartDbService.createOrderFromCart(cartId);
     }
 }
