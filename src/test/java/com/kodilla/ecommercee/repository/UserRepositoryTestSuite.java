@@ -21,9 +21,9 @@ public class UserRepositoryTestSuite {
     public void testCreateUsers() {
 
         //Given
-        User user1 = User.builder().id(null).username("tomasz-kowlaski").status(1).userKey(11L).build();
-        User user2 = User.builder().id(null).username("joanna-nowak").status(1).userKey(11L).build();
-        User user3 = User.builder().id(null).username("michał-wróbel").status(1).userKey(11L).build();
+        User user1 = User.builder().id(null).username("tomasz-kowlaski").status("blocked").userKey(11L).build();
+        User user2 = User.builder().id(null).username("joanna-nowak").status("unblocked").userKey(11L).build();
+        User user3 = User.builder().id(null).username("michał-wróbel").status("unblocked").userKey(11L).build();
 
         // When
         userRepository.save(user1);
@@ -54,9 +54,9 @@ public class UserRepositoryTestSuite {
     @Test
     public void testUpdateStatusOfUser() {
         //Given
-        User user1 = User.builder().id(null).username("tomasz-kowlaski").status(1).userKey(11L).build();
-        User user2 = User.builder().id(null).username("joanna-nowak").status(1).userKey(11L).build();
-        User user3 = User.builder().id(null).username("michał-wróbel").status(1).userKey(11L).build();
+        User user1 = User.builder().id(null).username("tomasz-kowlaski").status("blocked").userKey(11L).build();
+        User user2 = User.builder().id(null).username("joanna-nowak").status("unblocked").userKey(11L).build();
+        User user3 = User.builder().id(null).username("michał-wróbel").status("unblocked").userKey(11L).build();
 
         // When
         userRepository.save(user1);
@@ -70,9 +70,9 @@ public class UserRepositoryTestSuite {
         //Then
         Optional<User> findUser = userRepository.findById(user2Id);
         if (findUser.isPresent()) {
-            findUser.get().setStatus(2);
+            findUser.get().setStatus("blocked");
             User updateUser = userRepository.save(findUser.get());
-            Assert.assertEquals(2, updateUser.getStatus());
+            Assert.assertEquals("blocked", updateUser.getStatus());
         }
 
         //CleanUp

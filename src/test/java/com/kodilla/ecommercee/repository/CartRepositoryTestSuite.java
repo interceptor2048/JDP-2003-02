@@ -38,7 +38,7 @@ public class CartRepositoryTestSuite {
     @Test
     public void testSaveCart() {
         //Given
-        User kowalski = User.builder().id(null).username("kowalski").status(1).userKey(111L).build();
+        User kowalski = User.builder().id(null).username("kowalski").status("unblocked").userKey(111L).build();
         String groupName = "clothes";
         List<Product> products = new ArrayList<>();
         Group groupClothes = new Group(null, groupName, products);
@@ -99,7 +99,7 @@ public class CartRepositoryTestSuite {
     @Test
     public void testUpdateCartStatus() {
         //Given
-        User nowak = User.builder().id(null).username("nowak").status(0).userKey(99L).build();
+        User nowak = User.builder().id(null).username("nowak").status("blocked").userKey(99L).build();
         String groupName = "dresses";
         List<Product> products = new ArrayList<>();
         List<Order> orders = new ArrayList<>();

@@ -31,16 +31,16 @@ public class OrderRepositoryTestSuite {
         List<Order> orders1 = new ArrayList<>();
         List<Order> orders2 = new ArrayList<>();
         List<Order> orders3 = new ArrayList<>();
-        User user = new User().builder().id(null).username("Jonny").build();
-        Product product1 = new Product().builder().id(null).name("jacket").orders(orders1).build();
-        Product product2 = new Product().builder().id(null).name("toys").orders(orders2).build();
-        Product product3 = new Product().builder().id(null).name("plates").orders(orders3).build();
+        User user = User.builder().id(null).username("Jonny").build();
+        Product product1 = Product.builder().id(null).name("jacket").orders(orders1).build();
+        Product product2 = Product.builder().id(null).name("toys").orders(orders2).build();
+        Product product3 = Product.builder().id(null).name("plates").orders(orders3).build();
         List<Product> products = new ArrayList<>();
         products.add(product1);
         products.add(product2);
         products.add(product3);
 
-        return new Order().builder().id(null).creationDate(LocalDate.now()).status("open").user(user).products(products).build();
+        return Order.builder().id(null).creationDate(LocalDate.now()).status("open").user(user).products(products).build();
     }
 
     @Test
@@ -56,8 +56,8 @@ public class OrderRepositoryTestSuite {
         //Then
         Long orderId = order.getId();
         Optional<Order> actualOrder = orderRepository.findById(orderId);
-        int actualOrderSize = actualOrder.get().getProducts().size();
         Assert.assertTrue(actualOrder.isPresent());
+        int actualOrderSize = actualOrder.get().getProducts().size();
         Assert.assertEquals(3, actualOrderSize);
         Assert.assertEquals("Jonny", actualOrder.get().getUser().getUsername());
 
@@ -80,6 +80,7 @@ public class OrderRepositoryTestSuite {
         //Then
         Long orderId = order.getId();
         Optional<Order> actualOrder = orderRepository.findById(orderId);
+        Assert.assertTrue(actualOrder.isPresent());
         String orderStatus = actualOrder.get().getStatus();
         Assert.assertEquals("closed", orderStatus);
 
