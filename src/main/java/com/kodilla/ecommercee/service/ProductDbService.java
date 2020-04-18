@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.service;
 
+import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,17 @@ public class ProductDbService {
         List<Long> productsIdList = new ArrayList<>();
         productList.forEach(p -> productsIdList.add(p.getId()));
         return productsIdList;
+    }
+
+    public List<Product> getProducts() {
+        return productRepository.findAll();
+    }
+
+    public void saveProduct(Product product) {
+        productRepository.save(product);
+    }
+
+    public Optional<Product> getProduct(Long id) {
+        return productRepository.findById(id);
     }
 }
