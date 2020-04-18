@@ -26,31 +26,31 @@ public class CartController {
         this.cartDbService = cartDbService;
     }
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Long userId) {
+    @PostMapping(value="createCart",consumes = APPLICATION_JSON_VALUE)
+    public void createCart(@RequestParam Long userId) {
         cartDbService.saveCart(cartMapper.mapToCart(cartDbService.createEmptyCart(userId)));
     }
 
-    @GetMapping("/{cartId}")
-    public List<ProductDto> get(@PathVariable Long cartId) {
+    @GetMapping(value="getProductFromCart")
+    public List<ProductDto> getPrductFromCart(@RequestParam Long cartId) {
         return cartDbService.getProductsFormBasket(cartId);
     }
 
-    @PutMapping("/{cartId}")
-    public void addProduct(@PathVariable Long cartId, @RequestBody ProductDto productDto) {
+    @PutMapping(value="addProduct")
+    public void addProduct(@RequestParam Long cartId, @RequestBody ProductDto productDto) {
         cartDbService.addItemToCart(cartId, productDto);
     }
 
-    @DeleteMapping("{cartId}/{productId}")
-    public void removeProduct(@PathVariable Long cartId, @PathVariable Long productId) {
+    @DeleteMapping(value="removeProduct")
+    public void removeProduct(@RequestParam Long cartId, @RequestParam Long productId) {
 
         if (cartDbService.removeItemsFromCart(cartId, productId)) {
             LOGGER.info("Product has been successfully removed from Basket");
         }
     }
 
-    @PostMapping("{cartId}/createOrder")
-    public void createOrder(@PathVariable Long cartId) {
+    @PostMapping(value="createOrder")
+    public void createOrder(@RequestParam Long cartId) {
         cartDbService.createOrderFromCart(cartId);
     }
 }
