@@ -15,5 +15,5 @@ public class CartDto {
     private BigDecimal totalPrice;
     private boolean isClosed;
     private Long userId;
-    private List<Long> cartItems;
+    private List<ProductDto> cartItems;
 }

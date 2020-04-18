@@ -48,4 +48,12 @@ public class UserDbService {
         }
         return Optional.empty();
     }
+
+    public Optional<User> getActualUser(Long userId) {
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isPresent()) {
+            return foundUser;
+        }
+        return Optional.empty();
+    }
 }
