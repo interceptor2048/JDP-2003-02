@@ -18,8 +18,6 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-;
-
 
 @RestController
 @RequestMapping("/v1/carts")
