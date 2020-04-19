@@ -1,55 +1,74 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.CartDto;
-import com.kodilla.ecommercee.domain.OrderDto;
 import com.kodilla.ecommercee.domain.ProductDto;
-import org.springframework.http.MediaType;
+import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.mapper.ProductMapper;
+import com.kodilla.ecommercee.service.CartDbService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 @RestController
 @RequestMapping("/v1/carts")
 public class CartController {
-    @PostMapping
-    public void create() {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CartController.class);
+    private CartMapper cartMapper;
+    private CartDbService cartDbService;
+    private ProductMapper productMapper;
+
+    @Autowired
+    public CartController(CartMapper cartMapper, CartDbService cartDbService, ProductMapper productMapper) {
+        this.cartMapper = cartMapper;
+        this.cartDbService = cartDbService;
+        this.productMapper = productMapper;
     }
 
-    @GetMapping
-    public List<ProductDto> get() {
-
-        List<ProductDto> products = new ArrayList<>();
-        products.add(new ProductDto(1L, "kurtka zimowa", "Pellentesque tempus interdum quam ut rhoncus.", BigDecimal.valueOf(100), 1L));
-        products.add(new ProductDto(2L, "płaszcz", " Vivamus a bibendum purus.", BigDecimal.valueOf(150), 1L));
-        products.add(new ProductDto(8L, "krawat", "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor.", BigDecimal.valueOf(50), 2L));
-        return products;
+    @PostMapping("/{id}")
+    public void create(@PathVariable Long userId) {
+        List<ProductDto> items = new ArrayList<>();
+        CartDto cartDto = CartDto.builder().id(null).totalPrice(new BigDecimal(0.0)).isClosed(false)
+                .userId(userId).cartItems(items).build();
+        cartDbService.saveCart(cartMapper.mapToCart(cartDto));
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProductDto> addProducts(@RequestBody List<ProductDto> products) {
-        products.add(new ProductDto(1L, "kurtka zimowa", "Pellentesque tempus interdum quam ut rhoncus.", BigDecimal.valueOf(100), 1L));
-        products.add(new ProductDto(2L, "płaszcz", " Vivamus a bibendum purus.", BigDecimal.valueOf(150), 1L));
-        products.add(new ProductDto(8L, "krawat", "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor.", BigDecimal.valueOf(50), 2L));
-        products.add(new ProductDto(5L, "torebka", "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor.", BigDecimal.valueOf(40), 3L));
-        return products;
+    @GetMapping("{id}/products")
+    public List<ProductDto> getProducts(@PathVariable Long cartId) {
+        List<ProductDto> actualCart = new ArrayList<>();
+        Optional<Cart> readCart = Optional.ofNullable(cartDbService.getCartById(cartId).orElseThrow(() -> new RuntimeException("Cart not found")));
+        if (readCart.isPresent()) {
+            CartDto cartDto = cartMapper.mapToCartDto(readCart.get());
+            actualCart = cartDto.getCartItems();
+        }
+        return actualCart;
     }
 
-    @DeleteMapping(value = "/{id}")
-    public List<ProductDto> deleteProduct(@PathVariable Long id) {
-        List<ProductDto> products = new ArrayList<>();
-        products.add(new ProductDto(1L, "kurtka zimowa", "Pellentesque tempus interdum quam ut rhoncus.", BigDecimal.valueOf(100), 1L));
-        products.add(new ProductDto(2L, "płaszcz", " Vivamus a bibendum purus.", BigDecimal.valueOf(150), 1L));
-        return products;
+    @PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
+    public void addProduct(@PathVariable Long cartId, @RequestBody ProductDto productDto) {
+        cartDbService.addItemToCart(cartId, productMapper.mapToProduct(productDto));
     }
 
-    @PostMapping(value = "/createOrder")
-    public List<ProductDto> createOrder() {
-        List<ProductDto> products = new ArrayList<>();
-        products.add(new ProductDto(1L, "kurtka zimowa", "Pellentesque tempus interdum quam ut rhoncus.", BigDecimal.valueOf(100), 1L));
-        products.add(new ProductDto(8L, "krawat", "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor.", BigDecimal.valueOf(50), 2L));
-        products.add(new ProductDto(8L, "buty", "Nunc mi mi, laoreet ac mollis nec, pharetra sit amet tortor.", BigDecimal.valueOf(120), 3L));
-        return products;
+    @DeleteMapping("{id}/{productId}")
+    public void removeProduct(@PathVariable Long cartId, @PathVariable Long productId) {
+
+        if (cartDbService.removeItemsFromCart(cartId, productId)) {
+            LOGGER.info("Product has been successfully removed from Cart");
+        }
+    }
+
+    @PostMapping("{id}/createOrder")
+    public void createOrder(@PathVariable Long cartId) {
+        cartDbService.createOrderFromCart(cartId);
     }
 }
