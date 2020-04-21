@@ -35,15 +35,16 @@ public class CartController {
         this.productMapper = productMapper;
     }
 
-    @PostMapping("/{id}")
-    public void create(@PathVariable Long userId) {
+    @PostMapping("/users/{userId}")
+    public CartDto create(@PathVariable Long userId) {
         List<ProductDto> items = new ArrayList<>();
         CartDto cartDto = CartDto.builder().id(null).totalPrice(new BigDecimal(0.0)).isClosed(false)
                 .userId(userId).cartItems(items).build();
-        cartDbService.saveCart(cartMapper.mapToCart(cartDto));
+        Cart cart = cartDbService.saveCart(cartMapper.mapToCart(cartDto));
+        return cartMapper.mapToCartDto(cart);
     }
 
-    @GetMapping("{id}/products")
+    @GetMapping("/{cartId}")
     public List<ProductDto> getProducts(@PathVariable Long cartId) {
         List<ProductDto> actualCart = new ArrayList<>();
         Optional<Cart> readCart = Optional.ofNullable(cartDbService.getCartById(cartId).orElseThrow(() -> new RuntimeException("Cart not found")));
@@ -54,12 +55,12 @@ public class CartController {
         return actualCart;
     }
 
-    @PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{cartId}", consumes = APPLICATION_JSON_VALUE)
     public void addProduct(@PathVariable Long cartId, @RequestBody ProductDto productDto) {
         cartDbService.addItemToCart(cartId, productMapper.mapToProduct(productDto));
     }
 
-    @DeleteMapping("{id}/{productId}")
+    @DeleteMapping("{cartId}/products/{productId}")
     public void removeProduct(@PathVariable Long cartId, @PathVariable Long productId) {
 
         if (cartDbService.removeItemsFromCart(cartId, productId)) {
@@ -67,7 +68,7 @@ public class CartController {
         }
     }
 
-    @PostMapping("{id}/createOrder")
+    @PostMapping("{cartId}/createOrder")
     public void createOrder(@PathVariable Long cartId) {
         cartDbService.createOrderFromCart(cartId);
     }

@@ -27,8 +27,8 @@ public class CartDbService {
 
     }
 
-    public void saveCart(Cart cart) {
-        cartRepository.save(cart);
+    public Cart saveCart(Cart cart) {
+        return cartRepository.save(cart);
     }
 
     public Optional<Cart> getCartById(Long cartId) {
