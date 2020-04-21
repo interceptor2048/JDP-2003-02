@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +28,8 @@ public class CartDbService {
 
     }
 
-    public void saveCart(Cart cart) {
-        cartRepository.save(cart);
+    public Cart saveCart(Cart cart) {
+        return cartRepository.save(cart);
     }
 
     public Optional<Cart> getCartById(Long cartId) {
@@ -44,7 +45,7 @@ public class CartDbService {
         if (readCart.isPresent()) {
             LocalDate actualTime = LocalDate.now();
             Order order = Order.builder().id(null).creationDate(actualTime).user(readCart.get().getUser())
-                    .products(readCart.get().getCartItems()).status("Open").build();
+                    .products(new ArrayList<>(readCart.get().getCartItems())).status("Open").build();
             orderDbService.saveOrder(order);
             readCart.get().setClosed(true);
             saveCart(readCart.get());
